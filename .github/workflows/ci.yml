@@ -26,7 +26,7 @@ jobs:
           pip install -r requirements.txt
 
       - name: Check code quality with Flake8
-        run: flake8 app.py database.py tests
+        run: python -m flake8 app.py database.py tests
 
       - name: Run automated tests
-        run: pytest -v
+        run: python -m pytest -v
