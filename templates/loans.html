@@ -1,0 +1,103 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Active Book Loans</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f2f5f9;
+            padding: 25px;
+        }
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+        .card {
+            background: white;
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 10px;
+        }
+        h1, h2 {
+            color: #17365d;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+            text-align: left;
+        }
+        th {
+            background: #17365d;
+            color: white;
+        }
+        button {
+            padding: 8px 12px;
+            background: #17365d;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .message {
+            background: #e2f0d9;
+            padding: 10px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Active Book Loans</h1>
+
+    <p>
+        <a href="/">Home</a> |
+        <a href="/members">Manage Members</a> |
+        <a href="/issue">Issue a Book</a>
+    </p>
+
+    {% for message in get_flashed_messages() %}
+        <p class="message">{{ message }}</p>
+    {% endfor %}
+
+    <div class="card">
+        <h2>Issued Books</h2>
+
+        {% if loans %}
+        <table>
+            <tr>
+                <th>Book</th>
+                <th>Member</th>
+                <th>Issue Date</th>
+                <th>Due Date</th>
+                <th>Action</th>
+            </tr>
+
+            {% for loan in loans %}
+            <tr>
+                <td>{{ loan.title }}</td>
+                <td>{{ loan.name }}</td>
+                <td>{{ loan.issue_date }}</td>
+                <td>{{ loan.due_date }}</td>
+                <td>
+                    <form method="POST"
+                          action="{{ url_for('return_book', loan_id=loan.id) }}">
+                        <button type="submit">Return Book</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+        {% else %}
+            <p>There are no active book loans.</p>
+        {% endif %}
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,135 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library Book Management</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f2f5f9;
+            margin: 0;
+            padding: 25px;
+            color: #222;
+        }
+        .container {
+            max-width: 1000px;
+            margin: auto;
+        }
+        h1 {
+            color: #17365d;
+            text-align: center;
+        }
+        .card {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px #ddd;
+        }
+        input, button {
+            padding: 10px;
+            margin: 5px 3px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        button {
+            background: #17365d;
+            color: white;
+            cursor: pointer;
+        }
+        a {
+            color: #17365d;
+            margin-right: 15px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        th, td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+            text-align: left;
+        }
+        th {
+            background: #17365d;
+            color: white;
+        }
+        .message {
+            background: #e2f0d9;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Library Book Management System</h1>
+
+    <p>
+        <a href="/">Home</a>
+        <a href="/members">Manage Members</a>
+        <a href="/issue">Issue a Book</a>
+        <a href="/loans">Active Loans and Returns</a>
+    </p>
+
+    {% for message in get_flashed_messages() %}
+        <div class="message">{{ message }}</div>
+    {% endfor %}
+
+    <div class="card">
+        <h2>Add a New Book</h2>
+        <form action="/add" method="POST">
+            <input type="text" name="isbn" placeholder="ISBN" required>
+            <input type="text" name="title" placeholder="Book Title" required>
+            <input type="text" name="author" placeholder="Author" required>
+            <button type="submit">Add Book</button>
+        </form>
+    </div>
+
+    <div class="card">
+        <h2>Search Books</h2>
+        <form action="/search" method="GET">
+            <input type="text" name="q"
+                   placeholder="Search by title or author"
+                   value="{{ keyword or '' }}">
+            <button type="submit">Search</button>
+            <a href="/">Show All</a>
+        </form>
+    </div>
+
+    <div class="card">
+        <h2>Book Catalog</h2>
+        {% if books %}
+        <table>
+            <tr>
+                <th>ISBN</th>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Availability</th>
+            </tr>
+            {% for book in books %}
+            <tr>
+                <td>{{ book.isbn }}</td>
+                <td>{{ book.title }}</td>
+                <td>{{ book.author }}</td>
+                <td>
+                    {% if book.available %}
+                        Available
+                    {% else %}
+                        Issued
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+        {% else %}
+            <p>No books found. Add a book or try another search.</p>
+        {% endif %}
+    </div>
+</div>
+</body>
+</html>

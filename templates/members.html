@@ -1,0 +1,96 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Members</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f2f5f9;
+            padding: 25px;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+        }
+        .card {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        h1, h2 {
+            color: #17365d;
+        }
+        input, button {
+            padding: 10px;
+            margin: 5px;
+        }
+        button {
+            background: #17365d;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 12px;
+            border-bottom: 1px solid #ddd;
+            text-align: left;
+        }
+        th {
+            background: #17365d;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Manage Library Members</h1>
+
+    <p>
+        <a href="/">Home</a> |
+        <a href="/issue">Issue a Book</a> |
+        <a href="/loans">View Loans</a>
+    </p>
+
+    {% for message in get_flashed_messages() %}
+        <p>{{ message }}</p>
+    {% endfor %}
+
+    <div class="card">
+        <h2>Add Member</h2>
+        <form method="POST">
+            <input type="text" name="name"
+                   placeholder="Enter member name" required>
+            <button type="submit">Add Member</button>
+        </form>
+    </div>
+
+    <div class="card">
+        <h2>Member List</h2>
+        {% if members %}
+        <table>
+            <tr>
+                <th>Member ID</th>
+                <th>Name</th>
+            </tr>
+            {% for member in members %}
+            <tr>
+                <td>{{ member.id }}</td>
+                <td>{{ member.name }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        {% else %}
+            <p>No members added yet.</p>
+        {% endif %}
+    </div>
+</div>
+</body>
+</html>
